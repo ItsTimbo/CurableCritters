@@ -1,0 +1,5 @@
+GLOBAL: scripts/CurableCritters/global.lua
+PLAYER: scripts/CurableCritters/player.lua
+CUSTOM: scripts/CurableCritters/cure.lua
+CUSTOM: scripts/CurableCritters/critters/critter_infected.lua
+CUSTOM: scripts/CurableCritters/critters/critter_cured.lua
