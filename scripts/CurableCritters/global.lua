@@ -19,6 +19,8 @@ local function cureCritter(critter)
     local curedCritterScript = "scripts/CurableCritters/critters/critter_cured.lua"
     local critterName = string.gsub(critter.recordId, "%A[Dd]iseased.*", "")
 
+    critter:removeScript("scripts/CurableCritters/critters/critter_infected.lua")
+
     -- create cured critter and move to position of infected critter
     local curedCritter = world.createObject(critterName .. '_cured', 1)
     curedCritter:addScript(curedCritterScript)
@@ -27,7 +29,6 @@ local function cureCritter(critter)
         util.vector3(critter.position.x, critter.position.y, critter.position.z), -- original position to vector3
         critter.rotation
     )
-
     -- remove infected critter
     critter.remove(critter)
 
