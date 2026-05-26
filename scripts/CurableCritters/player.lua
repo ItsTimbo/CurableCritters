@@ -4,11 +4,10 @@ local types = require("openmw.types")
 local self = require("openmw.self")
 local core = require("openmw.core")
 local util = require("openmw_aux.util")
-local interfaces = require("openmw.interfaces")
 
 local infectedCritters = {}
 
-local function onLoad()
+local function onUpdate()
     -- find all nearby actors sorted by distance
     local critters = util.mapFilterSort(
         nearby.actors,
@@ -24,22 +23,11 @@ local function onLoad()
             table.insert(infectedCritters, critter)
         end
     end
-    core.sendGlobalEvent("addCureHandler", infectedCritters)
-end
-
-local function cureResult(success)
-    if success then
-        print("Cure successful!")
-    else
-        print("Cure failed.")
-    end
+    core.sendGlobalEvent("infectCritters", infectedCritters)
 end
 
 return {
     engineHandlers = {
-        onLoad = onLoad
-    },
-    eventHandlers = {
-        cureResult = cureResult
-    },
+        onUpdate = onUpdate
+    }
 }
