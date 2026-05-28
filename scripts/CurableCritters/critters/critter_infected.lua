@@ -2,7 +2,6 @@
 local self = require("openmw.self")
 local types = require("openmw.types")
 local core = require("openmw.core")
-local util = require("openmw_aux.util")
 
 -- Engine Handlers --
 local function onUpdate()
