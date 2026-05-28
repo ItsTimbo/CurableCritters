@@ -5,7 +5,7 @@ local nearby = require("openmw.nearby")
 -- start follower AI
 local function loadFriendlyCritterBehavior()
     AI.startPackage({
-        type="Follow",
+        type='Follow',
         cancelOther = true,
         target = nearby.players[1],
         duration = 60,
