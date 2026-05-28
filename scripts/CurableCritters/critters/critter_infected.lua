@@ -2,13 +2,16 @@
 local self = require("openmw.self")
 local types = require("openmw.types")
 local core = require("openmw.core")
+local util = require("openmw_aux.util")
 
 -- Engine Handlers --
 local function onUpdate()
     local spells = types.Actor.activeSpells(self.object)
-    for spell, _ in pairs(spells) do
-        if string.lower(spell) == 'cure common disease other' then
-            core.sendGlobalEvent('cureCritter', self.object)
+    for _, spell in pairs(spells) do
+        for _, effect in pairs(spell.effects) do
+            if effect.name == 'Cure Common Disease' then
+                core.sendGlobalEvent('cureCritter', self.object)
+            end
         end
     end
 end
