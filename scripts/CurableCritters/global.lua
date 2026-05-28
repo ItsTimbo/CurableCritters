@@ -5,7 +5,7 @@ local util = require("openmw.util")
 
 -- Event Handlers --
 local function infectCritters(infectedCritters)
-    local infectedCritterScript = "scripts/CurableCritters/critters/critter_infected.lua"
+    local infectedCritterScript = 'scripts/CurableCritters/critters/critter_infected.lua'
     -- add only one critter script to all infected critters
     for _, critter in pairs(infectedCritters) do
         if critter:hasScript(infectedCritterScript) then
@@ -16,10 +16,10 @@ local function infectCritters(infectedCritters)
 end
 
 local function cureCritter(critter)
-    local curedCritterScript = "scripts/CurableCritters/critters/critter_cured.lua"
-    local critterName = string.gsub(critter.recordId, "%A[Dd]iseased.*", "")
+    local curedCritterScript = 'scripts/CurableCritters/critters/critter_cured.lua'
+    local critterName = string.gsub(critter.recordId, '%A[Dd]iseased.*', '')
 
-    critter:removeScript("scripts/CurableCritters/critters/critter_infected.lua")
+    critter:removeScript('scripts/CurableCritters/critters/critter_infected.lua')
 
     -- create cured critter and move to position of infected critter
     local curedCritter = world.createObject(critterName .. '_cured', 1)
@@ -33,7 +33,7 @@ local function cureCritter(critter)
     critter.remove(critter)
 
     -- start friendly critter AI
-    curedCritter:sendEvent("loadFriendlyCritterBehavior")
+    curedCritter:sendEvent('loadFriendlyCritterBehavior')
 end
 
 -- Return
