@@ -41,7 +41,7 @@ local function satisfyCritter(data)
     local maxHP = health.base + health.modifier
     local healed = calculateHealed(data.isFavorite, data.feedQuality)
     health.current = math.min(maxHP, health.current + healed)
-    print('current HP: '..health.current..' | maxHP: '.. maxHP .. ' | healed: ' .. healed)
+    print('current HP: '..health.current..' | maxHP: '.. maxHP .. ' | healed: ' .. healed .. ' | FQ: ' .. data.feedQuality)
 end
 
 return {

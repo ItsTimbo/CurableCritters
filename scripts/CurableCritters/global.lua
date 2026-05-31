@@ -7,9 +7,9 @@ local infectedCritterScript = 'scripts/CurableCritters/critters/critter_infected
 local curedCritterScript = 'scripts/CurableCritters/critters/critter_cured.lua'
 
 local feedItems = {
-    mudcrab_cured = 'curablecritters_mudcrab_feed_1',
-    critter_feed_2 = "blooms",
-    critter_feed_3 = "goldies",
+    mudcrab_cured = 'curablecritters_mudcrab_feed',
+    scrib_cured = 'curablecritters_scrib_feed',
+    -- TODO:: cliff_racer_cured = 'curablecritters_cliff_racer_feed', 
 }
 
 -- Event Handlers --
@@ -45,25 +45,15 @@ local function cureCritter(critter)
 end
 
 local function checkFeed(data)
-    local feedSuccess = {
-        isFavorite = false,
-        feedQuality = 0,
-    }
     for _, item in pairs(types.Actor.getEquipment(data.player)) do
         for feedType, itemName in pairs(feedItems) do
             -- check if Player is holding feed when interacting
-            -- and check if feed is for correct critter
-            if item.recordId == itemName then
-                print(data.critter.recordId)
-                if feedType == data.critter.recordId then
-                    print(data.critter.recordId)
-                    data.critter:sendEvent('satisfyCritter', {
-                        isFavorite = true,
-                        feedQuality = 1.1,
-                    })
-                else
-                    data.critter:sendEvent('satisfyCritter', feedSuccess)
-                end
+            -- and check if feed is favorite for critter
+            if string.find(item.recordId, itemName) ~= nil then
+                data.critter:sendEvent('satisfyCritter', {
+                    isFavorite = feedType == data.critter.recordId,
+                    feedQuality = types.Lockpick.records[item.recordId].quality,
+                })
             end
         end
     end
