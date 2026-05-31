@@ -6,21 +6,18 @@ local types = require("openmw.types")
 local infectedCritterScript = 'scripts/CurableCritters/critters/critter_infected.lua'
 local curedCritterScript = 'scripts/CurableCritters/critters/critter_cured.lua'
 
-local feedItems = {
-    mudcrab_cured = 'curablecritters_mudcrab_feed',
-    scrib_cured = 'curablecritters_scrib_feed',
-    -- TODO:: cliff_racer_cured = 'curablecritters_cliff_racer_feed', 
-}
+local player = nil
 
 -- Event Handlers --
-local function infectCritters(infectedCritters)
+local function infectCritters(data)
     -- add only one critter script to all infected critters
-    for _, critter in pairs(infectedCritters) do
+    for _, critter in pairs(data.infectedCritters) do
         if critter:hasScript(infectedCritterScript) then
             critter:removeScript(infectedCritterScript)
         end
         critter:addScript(infectedCritterScript)
     end
+    player = data.player
 end
 
 local function cureCritter(critter)
@@ -40,22 +37,25 @@ local function cureCritter(critter)
         critter.rotation
     )
 
+    if player then
+        player:sendEvent('critterCured')
+    end
+
     -- start friendly critter AI
     curedCritter:sendEvent('loadFriendlyCritterBehavior')
 end
 
-local function checkFeed(data)
-    for _, item in pairs(types.Actor.getEquipment(data.player)) do
-        for feedType, itemName in pairs(feedItems) do
-            -- check if Player is holding feed when interacting
-            -- and check if feed is favorite for critter
-            if string.find(item.recordId, itemName) ~= nil then
-                data.critter:sendEvent('satisfyCritter', {
-                    isFavorite = feedType == data.critter.recordId,
-                    feedQuality = types.Lockpick.records[item.recordId].quality,
-                })
-            end
-        end
+local function removeFeedFromPlayer(data)
+    local inventory = types.Player.inventory(data.player)
+    local feedName = data.feedName
+    local feedList = inventory:findAll(feedName)
+
+    if not feedList[2] then
+        -- if not enough feed for auto stocking remains remove equiped item
+        feedList[1]:remove()
+    else
+        -- delete 1 from non-equiped stack
+        feedList[2]:remove(1)
     end
 end
 
@@ -64,6 +64,6 @@ return {
     eventHandlers = {
         infectCritters = infectCritters,
         cureCritter = cureCritter,
-        checkFeed = checkFeed,
+        removeFeedFromPlayer = removeFeedFromPlayer,
     }
 }
