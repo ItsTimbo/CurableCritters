@@ -95,7 +95,10 @@ local function onUpdate()
     infectedCritters = {}
     for _, critter in ipairs(critters) do
         -- filter creatures and check if creature is infected
-        if critter and critter.type == types.Creature and string.find(critter.recordId, 'diseased') ~= nil then
+        if critter and
+            critter.type == types.Creature and
+            string.find(critter.recordId, 'diseased') ~= nil
+        then
             table.insert(infectedCritters, critter)
         end
     end

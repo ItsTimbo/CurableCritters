@@ -2,9 +2,7 @@
 local AI = require("openmw.interfaces").AI
 local nearby = require("openmw.nearby")
 local self = require("openmw.self")
-local core = require("openmw.core")
 local types = require("openmw.types")
-
 
 local function calculateHealed(isFavorite, feedQuality)
     local baseHealth = 3
